@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HeroForm from "./components/HeroForm";
 import HeroList from "./components/HeroList";
+import HeroDetails from "./components/HeroDetails";
 
 const Main = () => {
     const [error, setError] = useState(null);
     const [heroes, setHeroes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     function fetchHeroes() {
+        setIsLoading(true);
         fetch(apiURL)
             .then((response) => response.json())
-            .then((data) => setHeroes(data["hydra:member"]));
+            .then((data) => setHeroes(data["hydra:member"]))
+            .then(() => setIsLoading(false));
     }
-
 
     useEffect(() => {
         fetchHeroes();
@@ -37,20 +35,28 @@ const Main = () => {
     };
 
     const deleteHero = (heroId) => {
-        fetch(apiURL + '/' + heroId, {
+        fetch(apiURL + "/" + heroId, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-        })
-            .then(() => {
-                fetchHeroes();
-            });
+        }).then(() => {
+            fetchHeroes();
+        });
     };
 
     return (
-        <div>
-            <HeroForm onAddHero={addHero} />
-            <HeroList heroes={heroes} onDeleteHero={deleteHero} />
-        </div>
+        <Router>
+            <div>
+                <Switch>
+                    <Route exact path="/">
+                        <HeroForm onAddHero={addHero} />
+                        <HeroList heroes={heroes} onDeleteHero={deleteHero} />
+                    </Route>
+                    <Route path="/hero">
+                        <HeroDetails />
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
     );
 };
 
