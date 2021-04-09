@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HeroForm from "./components/HeroForm";
 import HeroList from "./components/HeroList";
@@ -16,10 +16,6 @@ const Main = () => {
             .then((data) => setHeroes(data["hydra:member"]))
             .then(() => setIsLoading(false));
     }
-
-    useEffect(() => {
-        fetchHeroes();
-    }, []);
 
     const addHero = (hero) => {
         fetch(apiURL, {
@@ -49,11 +45,16 @@ const Main = () => {
                 <Switch>
                     <Route exact path="/">
                         <HeroForm onAddHero={addHero} />
-                        <HeroList heroes={heroes} onDeleteHero={deleteHero} />
+                        <HeroList
+                            heroes={heroes}
+                            onDeleteHero={deleteHero}
+                            fetchHeroes={fetchHeroes}
+                        />
                     </Route>
-                    <Route path="/hero">
-                        <HeroDetails />
-                    </Route>
+                    <Route
+                        path="/hero/:id"
+                        children={<HeroDetails apiURL={apiURL} />}
+                    />
                 </Switch>
             </div>
         </Router>
