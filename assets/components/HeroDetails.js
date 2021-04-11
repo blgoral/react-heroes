@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 const HeroDetails = (props) => {
     let { id } = useParams();
     const [heroName, setHeroName] = useState("");
     const [heroLevel, setHeroLevel] = useState("");
+    const history = useHistory();
 
     useEffect(() => {
         fetchHero(id);
@@ -26,7 +27,7 @@ const HeroDetails = (props) => {
             headers: { "Content-Type": "application/json" },
         })
             .then((response) => response.json())
-            .then((data) => console.log(data));
+            .then(() => history.push("/"));
     };
 
     const formHandler = (event) => {

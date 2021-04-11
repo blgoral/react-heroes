@@ -21,7 +21,7 @@ const HeroList = (props) => {
     });
 
     return (
-        <div>
+        <div className="hero-list bg">
             <ul>{mappedHeroes}</ul>
         </div>
     );
