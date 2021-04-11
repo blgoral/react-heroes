@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const HeroDetails = (props) => {
     let { id } = useParams();
     const [heroName, setHeroName] = useState("");
     const [heroLevel, setHeroLevel] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -12,12 +14,14 @@ const HeroDetails = (props) => {
     }, []);
 
     const fetchHero = (id) => {
+        setIsLoading(true);
         fetch(props.apiURL + "/" + id)
             .then((response) => response.json())
             .then((data) => {
                 setHeroName(data.name);
                 setHeroLevel(data.level);
-            });
+            })
+            .then(() => setIsLoading(false));
     };
 
     const updateHero = (hero) => {
@@ -36,10 +40,8 @@ const HeroDetails = (props) => {
     };
 
     return (
-        <div>
-            <h2>{heroName}</h2>
-            <h3>{heroLevel}</h3>
-            <section className="hero-form">
+        <React.Fragment>
+            <section className="hero-form bg">
                 <form onSubmit={formHandler}>
                     <div className="form-control">
                         <label htmlFor="hero-name">Hero Name</label>
@@ -63,10 +65,28 @@ const HeroDetails = (props) => {
                             }}
                         />
                     </div>
-                    <button type="submit">Update Hero</button>
+                    <button className="btn" type="submit">
+                        Update Hero
+                    </button>
+                    <button
+                        onClick={() => history.push("/")}
+                        className="btn"
+                        type="button"
+                    >
+                        Return To List
+                    </button>
                 </form>
             </section>
-        </div>
+            <section className="hero-details bg">
+                {isLoading && <Spinner />}
+                {!isLoading && (
+                    <React.Fragment>
+                        <h2>{heroName}</h2>
+                        <h3>{heroLevel}</h3>
+                    </React.Fragment>
+                )}
+            </section>
+        </React.Fragment>
     );
 };
 

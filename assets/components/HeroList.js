@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const HeroList = (props) => {
     useEffect(() => {
@@ -21,9 +22,11 @@ const HeroList = (props) => {
     });
 
     return (
-        <div className="hero-list bg">
-            <ul>{mappedHeroes}</ul>
-        </div>
+        <React.Fragment>
+            <div className="hero-list bg">
+                {props.isLoading ? <Spinner /> : <ul>{mappedHeroes}</ul>}
+            </div>
+        </React.Fragment>
     );
 };
 

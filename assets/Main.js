@@ -41,12 +41,13 @@ const Main = () => {
 
     return (
         <Router>
-            <div>
+            <div className="container">
                 <Switch>
                     <Route exact path="/">
                         <HeroForm onAddHero={addHero} />
                         <HeroList
                             heroes={heroes}
+                            isLoading={isLoading}
                             onDeleteHero={deleteHero}
                             fetchHeroes={fetchHeroes}
                         />
