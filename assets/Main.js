@@ -42,6 +42,9 @@ const Main = () => {
     return (
         <Router>
             <div className="container">
+                <h1>
+                    <span>🛡</span>React Heroes <span>🗡</span>
+                </h1>
                 <Switch>
                     <Route exact path="/">
                         <HeroForm onAddHero={addHero} />
