@@ -39,6 +39,10 @@ const Main = () => {
         });
     };
 
+    const clearHeroes = () => {
+        setHeroes([]);
+    };
+
     return (
         <Router>
             <div className="container">
@@ -53,11 +57,17 @@ const Main = () => {
                             isLoading={isLoading}
                             onDeleteHero={deleteHero}
                             fetchHeroes={fetchHeroes}
+                            setHeroes={setHeroes}
                         />
                     </Route>
                     <Route
                         path="/hero/:id"
-                        children={<HeroDetails apiURL={apiURL} />}
+                        children={
+                            <HeroDetails
+                                apiURL={apiURL}
+                                clearHeroes={clearHeroes}
+                            />
+                        }
                     />
                 </Switch>
             </div>

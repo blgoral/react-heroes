@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import Spinner from "./Spinner";
 
 const HeroDetails = (props) => {
@@ -11,6 +11,7 @@ const HeroDetails = (props) => {
 
     useEffect(() => {
         fetchHero(id);
+        props.clearHeroes();
     }, []);
 
     const fetchHero = (id) => {
@@ -68,13 +69,9 @@ const HeroDetails = (props) => {
                     <button className="btn" type="submit">
                         Update Hero
                     </button>
-                    <button
-                        onClick={() => history.push("/")}
-                        className="btn"
-                        type="button"
-                    >
+                    <Link to={"/"} className="btn">
                         Return To List
-                    </button>
+                    </Link>
                 </form>
             </section>
             <section className="hero-details bg">
