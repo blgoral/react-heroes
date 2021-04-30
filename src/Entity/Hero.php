@@ -7,9 +7,12 @@ use App\Repository\HeroRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"hero:read"}}
+ * )
  * @ORM\Entity(repositoryClass=HeroRepository::class)
  */
 class Hero
@@ -18,21 +21,25 @@ class Hero
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"hero:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"hero:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"hero:read"})
      */
     private $level;
 
     /**
      * @ORM\ManyToMany(targetEntity=HeroAbility::class, inversedBy="heroes")
+     * @Groups({"hero:read"})
      */
     private $abilities;
 
