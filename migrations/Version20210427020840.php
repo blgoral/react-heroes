@@ -30,4 +30,9 @@ final class Version20210427020840 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE hero_hero_ability');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

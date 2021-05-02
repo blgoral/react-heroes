@@ -6,6 +6,7 @@ const HeroDetails = (props) => {
     let { id } = useParams();
     const [heroName, setHeroName] = useState("");
     const [heroLevel, setHeroLevel] = useState("");
+    const [heroAbilities, setHeroAbilities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
@@ -21,6 +22,7 @@ const HeroDetails = (props) => {
             .then((data) => {
                 setHeroName(data.name);
                 setHeroLevel(data.level);
+                setHeroAbilities(data.abilities);
             })
             .then(() => setIsLoading(false));
     };
@@ -39,6 +41,10 @@ const HeroDetails = (props) => {
         event.preventDefault();
         updateHero({ name: heroName, level: heroLevel });
     };
+
+    let mappedAbilities = heroAbilities.map((ability) => {
+        return <li key={ability.abilityName}>{ability.abilityName}</li>;
+    });
 
     return (
         <React.Fragment>
@@ -80,6 +86,7 @@ const HeroDetails = (props) => {
                     <React.Fragment>
                         <h2>{heroName}</h2>
                         <h3>{heroLevel}</h3>
+                        <ul>{mappedAbilities}</ul>
                     </React.Fragment>
                 )}
             </section>
