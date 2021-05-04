@@ -7,17 +7,19 @@ const HeroDetails = (props) => {
     const [heroName, setHeroName] = useState("");
     const [heroLevel, setHeroLevel] = useState("");
     const [heroAbilities, setHeroAbilities] = useState([]);
+    const [abilities, setAbilities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
         fetchHero(id);
+        fetchAbilities();
         props.clearHeroes();
     }, []);
 
     const fetchHero = (id) => {
         setIsLoading(true);
-        fetch(props.apiURL + "/" + id)
+        fetch(props.apiURL + "heroes/" + id)
             .then((response) => response.json())
             .then((data) => {
                 setHeroName(data.name);
@@ -28,7 +30,7 @@ const HeroDetails = (props) => {
     };
 
     const updateHero = (hero) => {
-        fetch(props.apiURL + "/" + id, {
+        fetch(props.apiURL + "heroes/" + id, {
             method: "PUT",
             body: JSON.stringify(hero),
             headers: { "Content-Type": "application/json" },
@@ -37,13 +39,27 @@ const HeroDetails = (props) => {
             .then(() => history.push("/"));
     };
 
+    const fetchAbilities = () => {
+        fetch(props.apiURL + "hero_abilities/")
+            .then((response) => response.json())
+            .then((data) => setAbilities(data["hydra:member"]));
+    };
+
     const formHandler = (event) => {
         event.preventDefault();
         updateHero({ name: heroName, level: heroLevel });
     };
 
     let mappedAbilities = heroAbilities.map((ability) => {
-        return <li key={ability.abilityName}>{ability.abilityName}</li>;
+        return <li key={ability.id}>{ability.abilityName}</li>;
+    });
+
+    let selectAbilities = abilities.map((ability) => {
+        return (
+            <option key={ability.id} value={ability.id}>
+                {ability.abilityName}
+            </option>
+        );
     });
 
     return (
@@ -71,6 +87,12 @@ const HeroDetails = (props) => {
                                 setHeroLevel(+event.target.value);
                             }}
                         />
+                    </div>
+                    <div className="form-control">
+                        <label htmlFor="hero-abilities">Hero Abilities</label>
+                        <select name="hero-abilities" id="abilities-select">
+                            {selectAbilities}
+                        </select>
                     </div>
                     <button className="btn" type="submit">
                         Update Hero

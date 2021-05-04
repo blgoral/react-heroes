@@ -19,6 +19,7 @@ class HeroAbility
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"hero:read"})
      */
     private $id;
 

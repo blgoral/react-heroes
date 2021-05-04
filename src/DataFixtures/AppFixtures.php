@@ -21,11 +21,19 @@ class AppFixtures extends Fixture
     {
         $this->faker = Factory::create();
 
-        $heroAbility = new HeroAbility();
+        $starterAbility = new HeroAbility();
 
-        $heroAbility->setAbilityName("Basic Punch")->setAbilityPower(10);
+        $starterAbility->setAbilityName("Basic Punch")->setAbilityPower(10);
 
-        $manager->persist($heroAbility);
+        $manager->persist($starterAbility);
+
+        for($i = 0; $i < 20; $i++) {
+            $heroAbility = new HeroAbility();
+
+            $heroAbility->setAbilityName("Attack" . $i)->setAbilityPower(10);
+
+            $manager->persist($heroAbility);
+        }
 
         for($i = 0; $i <= 10; $i++) {
             $hero = new Hero();
@@ -33,7 +41,7 @@ class AppFixtures extends Fixture
             $hero->setName($this->faker->firstName)
                 ->setLevel(rand(1, 100));
 
-            $hero->addAbility($heroAbility);
+            $hero->addAbility($starterAbility);
 
             $manager->persist($hero);
         }

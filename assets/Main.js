@@ -11,14 +11,14 @@ const Main = () => {
 
     function fetchHeroes() {
         setIsLoading(true);
-        fetch(apiURL)
+        fetch(apiURL + "heroes/")
             .then((response) => response.json())
             .then((data) => setHeroes(data["hydra:member"]))
             .then(() => setIsLoading(false));
     }
 
     const addHero = (hero) => {
-        fetch(apiURL, {
+        fetch(apiURL + "heroes/", {
             method: "POST",
             body: JSON.stringify(hero),
             headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ const Main = () => {
     };
 
     const deleteHero = (heroId) => {
-        fetch(apiURL + "/" + heroId, {
+        fetch(apiURL + "heroes/" + heroId, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         }).then(() => {
@@ -75,6 +75,6 @@ const Main = () => {
     );
 };
 
-const apiURL = "https://localhost:8000/api/heroes";
+const apiURL = "https://localhost:8000/api/";
 
 export default Main;
