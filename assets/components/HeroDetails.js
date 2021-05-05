@@ -64,7 +64,8 @@ const HeroDetails = (props) => {
 
     const findAbility = (term) => {
         const result = abilities.find((ability) => ability["@id"] === term);
-        if (result) {
+        const check = heroAbilities.find((ability) => ability["@id"] === term);
+        if (result && !check) {
             setHeroAbilities([...heroAbilities, result]);
         }
     };
