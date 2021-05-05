@@ -39,7 +39,7 @@ class Hero
 
     /**
      * @ORM\ManyToMany(targetEntity=HeroAbility::class, inversedBy="heroes")
-     * @Groups({"hero:read"})
+     * @Groups({"hero:read", "hero:write"})
      */
     private $abilities;
 

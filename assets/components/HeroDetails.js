@@ -8,6 +8,7 @@ const HeroDetails = (props) => {
     const [heroLevel, setHeroLevel] = useState("");
     const [heroAbilities, setHeroAbilities] = useState([]);
     const [abilities, setAbilities] = useState([]);
+    const [selectedAbility, setSelectedAbility] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
@@ -45,22 +46,41 @@ const HeroDetails = (props) => {
             .then((data) => setAbilities(data["hydra:member"]));
     };
 
-    const formHandler = (event) => {
-        event.preventDefault();
-        updateHero({ name: heroName, level: heroLevel });
-    };
-
     let mappedAbilities = heroAbilities.map((ability) => {
-        return <li key={ability.id}>{ability.abilityName}</li>;
+        return (
+            <li className={ability["@id"]} key={ability.id}>
+                {ability.abilityName}
+            </li>
+        );
     });
 
     let selectAbilities = abilities.map((ability) => {
         return (
-            <option key={ability.id} value={ability.id}>
+            <option key={ability["@id"]} value={ability["@id"]}>
                 {ability.abilityName}
             </option>
         );
     });
+
+    const findAbility = (term) => {
+        const result = abilities.find((ability) => ability["@id"] === term);
+        if (result) {
+            setHeroAbilities([...heroAbilities, result]);
+        }
+    };
+
+    const formHandler = (event) => {
+        event.preventDefault();
+        let abilityList = [];
+        heroAbilities.forEach((item) => {
+            abilityList.push(item["@id"]);
+        });
+        updateHero({
+            name: heroName,
+            level: heroLevel,
+            abilities: abilityList,
+        });
+    };
 
     return (
         <React.Fragment>
@@ -90,10 +110,25 @@ const HeroDetails = (props) => {
                     </div>
                     <div className="form-control">
                         <label htmlFor="hero-abilities">Hero Abilities</label>
-                        <select name="hero-abilities" id="abilities-select">
+                        <select
+                            name="hero-abilities"
+                            id="abilities-select"
+                            onChange={(event) => {
+                                setSelectedAbility(event.target.value);
+                            }}
+                        >
                             {selectAbilities}
                         </select>
                     </div>
+                    <button
+                        onClick={() => {
+                            findAbility(selectedAbility);
+                        }}
+                        className="btn"
+                        type="button"
+                    >
+                        Add Ability
+                    </button>
                     <button className="btn" type="submit">
                         Update Hero
                     </button>
