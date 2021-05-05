@@ -47,11 +47,7 @@ const HeroDetails = (props) => {
     };
 
     let mappedAbilities = heroAbilities.map((ability) => {
-        return (
-            <li className={ability["@id"]} key={ability.id}>
-                {ability.abilityName}
-            </li>
-        );
+        return <li key={ability["@id"]}>{ability.abilityName}</li>;
     });
 
     let selectAbilities = abilities.map((ability) => {
@@ -118,6 +114,7 @@ const HeroDetails = (props) => {
                                 setSelectedAbility(event.target.value);
                             }}
                         >
+                            <option value="">Choose Ability</option>
                             {selectAbilities}
                         </select>
                     </div>

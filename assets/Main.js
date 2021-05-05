@@ -18,13 +18,12 @@ const Main = () => {
     }
 
     const addHero = (hero) => {
-        fetch(apiURL + "heroes/", {
+        fetch(apiURL + "heroes", {
             method: "POST",
             body: JSON.stringify(hero),
             headers: { "Content-Type": "application/json" },
         })
             .then((response) => response.json())
-            .then((data) => console.log(data))
             .then(() => {
                 fetchHeroes();
             });
