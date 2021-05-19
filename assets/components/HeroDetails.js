@@ -99,7 +99,8 @@ const HeroDetails = (props) => {
                         <input
                             type="number"
                             id="hero-level"
-                            value={heroLevel}
+                            value={heroLevel ? heroLevel : ""}
+                            placeholder={0}
                             onChange={(event) => {
                                 setHeroLevel(+event.target.value);
                             }}
